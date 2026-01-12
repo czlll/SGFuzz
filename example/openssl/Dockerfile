@@ -49,9 +49,9 @@ RUN git clone https://github.com/google/honggfuzz.git && \
     mv libhfcommon/libhfcommon.a /usr/lib/libhfcommon.a && \
     mv libhfnetdriver/libhfnetdriver.a /usr/lib/libhfnetdriver.a
 
-# Set up SFuzzer
-RUN git clone https://github.com/bajinsheng/SFuzzer.git && \
-    cd SFuzzer && \
+# Set up SGFuzz
+RUN git clone https://github.com/bajinsheng/SGFuzz.git && \
+    cd SGFuzz && \
     ./build.sh && \
     cp libsfuzzer.a /usr/lib/libsFuzzer.a
 
@@ -75,7 +75,7 @@ RUN cd ${WORKDIR} && \
     cp ${WORKDIR}/*.pem ./ && \
     git checkout c74188e && \
     sed -i "s/ main/ HonggfuzzNetDriver_main/g" apps/openssl.c && \
-    python3 /home/ubuntu/SFuzzer/sanitizer/State_machine_instrument.py ${WORKDIR}/openssl-sfuzzer/ -b ${WORKDIR}/blocked_variables.txt && \
+    python3 /home/ubuntu/SGFuzz/sanitizer/State_machine_instrument.py ${WORKDIR}/openssl-sfuzzer/ -b ${WORKDIR}/blocked_variables.txt && \
     CC=clang-10 CXX=clang++-10 CFLAGS="-fsanitize=fuzzer-no-link -fsanitize=address" ./config no-shared && \
     make build_generated && \
     make apps/openssl || clang++-10 -fsanitize=fuzzer-no-link -fsanitize=address -lsFuzzer -lhfnetdriver -lhfcommon \
