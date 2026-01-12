@@ -56,9 +56,6 @@ The pieces do not 'take' each other, they will only switch positions.
 Pawns do not take diagonally, they only move forward one step at a time.
 As in chess, pieces can not jump over each other; the knight is the only exception to this rule.
 
-To exploit:
-If a white knight makes it to 7,8 and then tries to display the board (the '9' option), it will crash. 
-As seen in the pov.xml.
 */
 
 
@@ -302,9 +299,7 @@ int performMove(Move move)
 		}
 	}
 
-	
-// NOTE: Vulnerability is here
-// the knight move check is placed before the bounds check, which is the vulnerability
+
 #ifndef PATCHED
 	if (piece == KNIGHT_WHITE)
 	{
@@ -368,7 +363,6 @@ int performMove(Move move)
 			return 0;
 	}
 
-// This is where the knight move check should happen (after the bounds check, above)
 #ifdef PATCHED
 	if (piece == KNIGHT_WHITE)
 	{
